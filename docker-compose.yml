@@ -1,0 +1,12 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:14.5-bullseye
+    container_name: samplememo-db
+    ports:
+      - '8090:5432'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./.db-data:/var/lib/postgresql/data
