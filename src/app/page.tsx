@@ -12,7 +12,7 @@ type Memo = {
   title: string;
   content: string;
   createdAt: string;
-  tags: string[];
+  tags: Tag[];
 };
 
 
@@ -29,12 +29,12 @@ export default function Home() {
   useEffect(()=> {
     const fetchData = async () =>{
       //メモ一覧
-      const memoResponse = await fetch(`/api/memo`);
+      const memoResponse = await fetch(`/api/memos`);
       const memoData = await memoResponse.json();
       setMemos(memoData.data || []);
 
       //タグ一覧
-      const tagResponse = await fetch(`/api/tag`);
+      const tagResponse = await fetch(`/api/tags`);
       const tagData = await tagResponse.json();
       setTags(tagData.data || []);
     }
@@ -43,11 +43,11 @@ export default function Home() {
 
   // タグでフィルタリング
   const filteredMemos = selectedTag
-    ? memos.filter((memo) => memo.tags.includes(selectedTag))
-    : memos;
+    ? memos.filter((memo) => memo.tags.some(t => t.id === selectedTag)):memos;
 
   // 日付フォーマット
-  const formatDate = (date: Date) => {
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
     return new Intl.DateTimeFormat('ja-JP', {
       year: 'numeric',
       month: '2-digit',

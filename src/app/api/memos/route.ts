@@ -4,12 +4,15 @@ const prisma = new PrismaClient();
 
 //メモ一覧取得API
 export async function GET(request: Request) {
-    const todos = await prisma.memo.findMany({
+    const memos = await prisma.memo.findMany({
+        include: {
+            tags: true
+        },
         orderBy: {
             createdAt: "asc"
         }
     })
-    return Response.json({ data: todos });
+    return Response.json({ data: memos });
     };
 
 //メモ作成API
